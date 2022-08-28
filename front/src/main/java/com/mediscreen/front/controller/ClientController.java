@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -77,11 +78,19 @@ public class ClientController {
     @GetMapping("/searchPatient")
     public  String patientSearch(@Valid Model model, String firstName, String lastName) {
         logger.info("Send search patient named: {} {}", firstName, lastName);
+        /*
         if(firstName.isEmpty() && lastName.isEmpty()) {
             model.addAttribute("patients", clientService.getAllPatients());
         } else {
              model.addAttribute("patients", clientService.getPatientByName(firstName,lastName));
         }
+        return "patientsList";
+
+         */
+        List<PatientBean> patientList = clientService.getPatientByName(firstName,lastName);
+        model.addAttribute("patients", patientList);
+        model.addAttribute("firstName", firstName);
+        model.addAttribute("lastName", lastName);
         return "patientsList";
     }
 
@@ -123,10 +132,16 @@ public class ClientController {
     }
 
     @RequestMapping(value="/patient/note/add", method = {RequestMethod.GET, RequestMethod.POST})
-    public String addPatientNote(@Valid Model model, String note, Long patientId) {
-        logger.info("Send new note: {} with patient id {}", note, patientId);
-        clientService.addNewNote(note, patientId);
-        return patientDetails(model, patientId);
+    public String addPatientNote(Model model, @Valid NoteDto note, BindingResult result) {
+        if (result.hasErrors()) {
+            logger.info("Validate failed for adding note!");
+            model.addAttribute("hasError", true);
+            model.addAttribute("errMsg", "Note cannot be empty");
+            return patientDetails(model, note.getPatientId());
+        }
+        logger.info("Send new note: {} with patient id {}", note.getNote(), note.getPatientId());
+        clientService.addNewNote(note.getNote(), note.getPatientId());
+        return patientDetails(model, note.getPatientId());
     }
 
     @PostMapping("/patient/note/update")

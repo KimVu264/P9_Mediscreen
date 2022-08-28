@@ -44,7 +44,9 @@ public class PatientController {
     @GetMapping("/searchPatient")
     public  ResponseEntity<List<Patient>> patientSearch(Model model, String firstName, String lastName) {
         logger.info("Send search patient named: {} {}", firstName, lastName);
-        return new ResponseEntity<>(patientService.getByPatientName(model,firstName,lastName), OK) ;
+        //return new ResponseEntity<>(patientService.getByPatientName(model,firstName,lastName), OK) ;
+        List<Patient> patients = patientService.searchPatientsByName(firstName, lastName);
+        return new ResponseEntity<>(patients, OK);
     }
 
     @GetMapping("/patient/lastName")

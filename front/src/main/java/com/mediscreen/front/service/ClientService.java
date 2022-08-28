@@ -60,7 +60,6 @@ public class ClientService {
 
     public List<PatientBean> getPatientByName(String firstName, String lastName)  {
         return patientProxy.searchPatient(firstName, lastName);
-        //return patientProxy.getAllPatients();
     }
 
     public PatientBean updatePatient(Model model, PatientBean patient) {

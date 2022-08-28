@@ -73,6 +73,20 @@ public class PatientService {
         return patientRepository.findByFirstName(firstName);
 
     }
+
+    public List<Patient> searchPatientsByName(String firstName, String lastName) {
+        List<Patient> patientList = patientRepository.findAll();
+
+        if (!firstName.isEmpty() && !lastName.isEmpty()) {
+            patientList = patientRepository.findPatientByFirstNameAndLastName(firstName, lastName);
+        } else if (!firstName.isEmpty()) {
+            patientList = patientRepository.findByFirstName(firstName);
+        } else if (!lastName.isEmpty()) {
+            patientList = patientRepository.findByLastName(lastName);
+        }
+        return patientList;
+    }
+
     public List<Patient> getByPatientName(Model model, String firstName, String lastName) {
         logger.info("Get a patient by name: {} {}", firstName,lastName);
         List<Patient> patientList = new ArrayList<>();
@@ -93,11 +107,6 @@ public class PatientService {
         else if (firstNameList.size() == 0 && lastNameList.size() == 0){
             model.addAttribute("noPatientFound", "Patient does not exists in database. Try again.");
         }
-        /*HashSet duplicationCleanUp=new HashSet<>();
-        patientList.removeIf(p-> !duplicationCleanUp.add(p.getId()));
-        List<Patient> noDuplicatePatientList = new ArrayList<>(new HashSet<>(duplicationCleanUp));
-         return noDuplicatePatientList;
-         */
         return patientList;
     }
 
