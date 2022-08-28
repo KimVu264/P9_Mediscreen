@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Patient Management System</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+          crossorigin="anonymous">
+
+</head>
+<body>
+<div class="container">
+    <h4>Patient Management System</h4>
+    <hr>
+    <h2>Update A Patient</h2>
+
+    <form th:action="@{/savePatient}" th:object="${patient}" method="POST">
+
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text col-4 justify-content-center"> Id </span>
+            <input type="text" class="form-control" name="id" th:value="${patient.id}" readonly>
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text col-4 justify-content-center"> First Name </span>
+            <input type="text" class="form-control" name="firstName" th:value="${patient.firstName}">
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text col-4 justify-content-center"> Last Name </span>
+            <input type="text" class="form-control" name="lastName" th:value="${patient.lastName}" >
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text col-4 justify-content-center"> Birthdate </span>
+            <input type="date" class="form-control" name="birthdate" th:value="${patient.birthdate}">
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text col-4 justify-content-center"> Select Gender </span>
+            <select name="gender">
+                <option class="form-control" th:each="gender: ${T(com.mediscreen.front.enums.Gender).values()}"
+                        th:value="${patient.gender}" th:text="${patient.gender}" ></option>
+            </select>
+
+        </div>
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text col-4 justify-content-center"> Address </span>
+            <input type="text" class="form-control" name="address" th:value="${patient.address}">
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text col-4 justify-content-center"> Phone number </span>
+            <input type="text" class="form-control" name="tel" th:value="${patient.tel}">
+        </div>
+
+        <button type="submit" class="btn btn-info col-2"> Update Patient</button>
+    </form>
+    <hr>
+
+    <a th:href="@{/patients}"> Cancel and back to Patient List</a>
+</div>
+</body>
+</html>

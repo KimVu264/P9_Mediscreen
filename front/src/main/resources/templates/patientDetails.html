@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Patient Management System</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+          crossorigin="anonymous">
+
+</head>
+<body>
+<div class="container">
+    <h2>Patient Info Details</h2>
+
+    <div class="container-fluid ">
+        <div class="row justify-content-md-center">
+            <div class="col-lg-auto text-center">
+                <!-- Patient assessment -->
+                <div th:if="${patientReport}" class="searchReportResult">
+                    <h4>PATIENT RISK REPORT</h4>
+                    <p>Patient name: <span th:text="${patientReport.patient.firstName}"></span>
+                                     <span th:text="${patientReport.patient.lastName}"></span>
+                        <br>
+                       Patient age : <span th:text="${patientReport.age}"></span> years old
+                        <br>The risk level of this patient is:</p>
+                    <span th:if="${#strings.equals(patientReport.riskLevel ,'NONE')}"
+                          class="d-block p-3 bg-success bg-gradient text-white"
+                          th:text="${patientReport.riskLevel}"></span>
+                    <span th:if="${#strings.equals(patientReport.riskLevel ,'EARLY_ONSET')}"
+                          class="d-block p-3 bg-warning bg-gradient bg-opacity-75 text-white"
+                          th:text="${patientReport.riskLevel}"></span>
+                    <span th:if="${#strings.equals(patientReport.riskLevel ,'BORDERLINE')}"
+                          class="d-block p-3 bg-warning bg-gradient text-white"
+                          th:text="${patientReport.riskLevel}"></span>
+                    <span th:if="${#strings.equals(patientReport.riskLevel ,'IN_DANGER')}"
+                          class="d-block p-3 bg-danger bg-gradient text-white"
+                          th:text="${patientReport.riskLevel}"></span>
+                </div>
+                <br><br>
+                <h4>PATIENT NOTES</h4>
+                <!-- Search patient notes history -->
+                <div th:each="patientNote: ${PatientNoteList}">
+
+                    <form class="form-inline" th:action="@{/patient/note/update(id=${patientNote.id})}" method="post"
+                          th:object="${NoteDto}">
+
+                        <div class="col-7"
+                             th:text="${#dates.format(patientNote.createdDate, 'dd/MM/yyyy hh:mm a')}">
+                        </div>
+
+                        <div class="col-7">
+                        <textarea class="form-control" name="note"
+                                  th:text="${patientNote.note}">
+                        </textarea> <br>
+                        </div>
+                        <div style="display: flex">
+                            <button type="submit" class="btn btn-primary"> Update</button>
+                            &emsp;
+                            <a th:href="@{/patient/note/delete(id=${patientNote.id})}"
+                               class="btn btn-danger"> Delete </a>
+                        </div>
+                        <br> <br>
+                    </form>
+                </div>
+            </div>
+            <br>
+        </div>
+        <br><br>
+        <!-- Add patient note history -->
+        <form th:action="@{/patient/note/add}" th:method="post">
+            <div style="margin: auto; text-align: center;">
+                <textarea class="form-control col-5"
+                          style="text-align: center; margin: auto"
+                          name="note" th:value="*{note}"> </textarea>
+                <p>Add a new note </p>
+            <button type="submit" class="btn btn-primary" name="patientId" th:value="${PatientId}">
+                Save note
+            </button>
+            </div>
+        </form>
+        <br>
+
+        <!-- Search result fields -->
+        <div th:if="${patientFound}" class="searchPatientResult">
+            <div th:each="patient : ${patientFound}">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-md-center">
+    <a type="submit" class="btn col-3 btn-primary btn-sm center" href="/patients"> Back to list </a>
+</div>
+<br><br>
+</div>
+</div>
+</body>
+</html>
