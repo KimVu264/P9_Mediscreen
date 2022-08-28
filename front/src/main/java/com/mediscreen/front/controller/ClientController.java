@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -51,15 +52,22 @@ public class ClientController {
 
     }
 
-    @GetMapping("/addPatient")
+    @GetMapping("/patient/add")
     public String addPatient(@Valid Model model) {
         model.addAttribute("patient", new PatientBean());
         return "addPatient";
     }
 
     @PostMapping("/savePatient")
-    public String savePatient(@Valid PatientBean patient) {
+    public String savePatient(@Valid PatientBean patient, BindingResult result) {
         //model.addAttribute("patient", new PatientBean());
+        //clientService.savePatient(patient);
+        //return "redirect:/patients";
+        if (result.hasErrors()) {
+            logger.info("Validate failed for adding patient!");
+            return "addPatient";
+        }
+        logger.info("save patient with name: {} {}",patient.getFirstName(), patient.getLastName() );
         clientService.savePatient(patient);
         return "redirect:/patients";
     }
@@ -72,6 +80,7 @@ public class ClientController {
         getPatientNotes(model, id);
         ReportDto reportDto = clientService.getReportByPatientId(id);
         model.addAttribute("patientReport", reportDto);
+        model.addAttribute("NoteDto", new NoteDto());
         return "patientDetails";
     }
 
@@ -103,22 +112,19 @@ public class ClientController {
             return "updatePatient";
         } else
             return "patientsList";
-
     }
-/*
+
     @PostMapping("/patient/update")
-    public String patientUpdate(Model model, PatientBean patient) {
+    public String patientUpdate(@Valid PatientBean patient) {
         logger.info("Send update to patient named: {} {}", patient.getFirstName(), patient.getLastName());
-        clientService.updatePatient(model, patient);
+        clientService.updatePatient(patient);
         return "redirect:/patients";
     }
 
- */
-
     @RequestMapping("/patient/delete")
-    public String patientDelete(@Valid Model model, PatientBean patient) {
-        logger.info("Send patient to delete named: {} {}", patient.getFirstName(), patient.getLastName());
-        clientService.deletePatient(model,patient);
+    public String patientDelete(@Valid Long id) {
+        logger.info("Send patient to delete with id: {}", id);
+        clientService.deletePatient(id);
         return "redirect:/patients";
     }
 
@@ -129,9 +135,10 @@ public class ClientController {
         model.addAttribute("PatientNoteList", patientNoteList);
         model.addAttribute("PatientId", patientId);
         return "patientPageInfo";
+        //return "patientDetails";
     }
 
-    @RequestMapping(value="/patient/note/add", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value="/patient/note/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String addPatientNote(Model model, @Valid NoteDto note, BindingResult result) {
         if (result.hasErrors()) {
             logger.info("Validate failed for adding note!");
@@ -162,7 +169,6 @@ public class ClientController {
         clientService.deleteNote(id);
         return patientDetails(model, patientId);
     }
-
 
     /*
     @GetMapping("/patientsList/page/{pageNo}")

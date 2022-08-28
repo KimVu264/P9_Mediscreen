@@ -15,11 +15,14 @@ public interface PatientProxy {
     @GetMapping(value = "/patient/id")
     PatientBean getPatientById(@RequestParam("id") Long patientId);
 
+    /*
     @GetMapping(value = "/patients/lastName")
     List<PatientBean> getPatientByLastName(@RequestParam("lastName") String lastName);
 
     @GetMapping(value = "/patients/firstName")
     List<PatientBean> getPatientByFirstName(@RequestParam("firstName") String firstName);
+
+     */
 
     @GetMapping(value = "/searchPatient")
     List<PatientBean> searchPatient(@RequestParam String firstName, @RequestParam String lastName);
@@ -31,6 +34,6 @@ public interface PatientProxy {
     PatientBean updatePatient(@RequestBody PatientBean patientBean);
 
     @DeleteMapping("/patient/delete")
-    void deletePatient(@RequestBody PatientBean patient);
+    void deletePatient(@RequestParam("id") Long patientId);
 
 }

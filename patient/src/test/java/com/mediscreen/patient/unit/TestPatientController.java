@@ -40,9 +40,6 @@ public class TestPatientController {
     @MockBean
     private PatientService patientService;
 
-    @MockBean
-    private PatientConversion conversion;
-
     static Model model;
     static Patient patient;
     static List<Patient> patientList;
@@ -68,7 +65,7 @@ public class TestPatientController {
     }
 
     @Test
-    void addPatientTest_shouldReturnPatientAdded() throws Exception {
+    void addPatientTest() throws Exception {
         //Arrange
         when(patientService.savePatient(patient)).thenReturn(patient);
         //Act
@@ -77,37 +74,21 @@ public class TestPatientController {
                         .accept(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(patient)))
                 .andDo(print())
                 .andExpect(status().isCreated());
-
     }
 
     @Test
     void patientUpdateTest() throws Exception {
-        when(patientService.updatePatient(any(),any())).thenReturn(patient);
         mockMvc.perform(put("/patient/update")
-                        .param("model", String.valueOf(model))
-                        .content(objectMapper.writeValueAsString(patient))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(objectMapper.writeValueAsString(patient)));
-    }
-
-    @Test
-    void deletePatientTest() throws Exception {
-        //Arrange
-        when(patientService.updatePatient(any(),any())).thenReturn(patient);
-        mockMvc.perform(delete("/patient/delete")
-                        .param("model", String.valueOf(model))
-                        .content(objectMapper.writeValueAsString(patient))
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .param("id", "1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(patient)))
                 .andExpect(status().isOk())
                 .andExpect(content().string(""));
-
     }
 
     @Test
-    void deletePatientByIdTest() throws Exception
-    {
-        mockMvc.perform(delete("/patient/delete/id")
+    void deletePatientByIdTest() throws Exception {
+        mockMvc.perform(delete("/patient/delete")
                         .param("id", "1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -115,50 +96,22 @@ public class TestPatientController {
     }
 
     @Test
-    void getPatientByIdTest_shouldReturnThrowException() throws Exception {
+    void getPatientByIdTest() throws Exception {
         //Arrange
-        when(patientService.getPatientById(1L)).thenThrow(DataNotFoundException.class);
+        when(patientService.getPatientById(1L)).thenReturn(patient);
         //Act
         mockMvc.perform(get("/patient/id")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .param("id", "1"))
                 .andDo(print())
-                .andExpect(status().isNotFound());
-
-    }
-
-    @Test
-    void getPatientByFirstNameTest_shouldReturnPatient() throws Exception {
-        //Arrange
-        when(patientService.getPatientByFirstName(any())).thenReturn(List.of(patient));
-        //Act
-        mockMvc.perform(get("/patient/firstName")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .param("firstName", "Toto"))
-                .andDo(print())
                 .andExpect(status().isOk());
 
     }
 
     @Test
-    void getPatientByLastNameTest_shouldReturnPatient() throws Exception {
-        //Arrange
-        when(patientService.getPatientsByLastName(any())).thenReturn(List.of(patient));
-        //Act
-        mockMvc.perform(get("/patient/lastName")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .param("lastName", "test"))
-                .andDo(print())
-                .andExpect(status().isOk());
-
-    }
-
-    @Test
-    void getPatientByNameTest() throws Exception {
-        when(patientService.getByPatientName(any(),any(),any())).thenReturn(patientList);
+    void searchPatientByNameTest() throws Exception {
+        when(patientService.searchPatientsByName(any(),any())).thenReturn(patientList);
         mockMvc.perform(get("/searchPatient")
                         .param("model", String.valueOf(model))
                         .param("firstName", "Toto")

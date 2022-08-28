@@ -5,8 +5,9 @@ import com.mediscreen.patient.model.Gender;
 import com.mediscreen.patient.model.Patient;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Generated;
 import java.sql.Date;
-import java.time.LocalDate;
+
 
 @Component
 public class PatientConversion {

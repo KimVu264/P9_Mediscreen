@@ -50,28 +50,21 @@ public class ClientService {
         return patientProxy.getPatientById(id);
     }
 
-    public List<PatientBean> getPatientByLastName(String lastName)  {
-        return patientProxy.getPatientByLastName(lastName);
-    }
-
-    public List<PatientBean> getPatientByFirstName(String firstName)  {
-        return patientProxy.getPatientByLastName(firstName);
-    }
-
     public List<PatientBean> getPatientByName(String firstName, String lastName)  {
         return patientProxy.searchPatient(firstName, lastName);
     }
 
-    public PatientBean updatePatient(Model model, PatientBean patient) {
+    public PatientBean updatePatient(PatientBean patient) {
         logger.info("update patient: {} {}", patient.getFirstName(),patient.getLastName());
-        patientProxy.savePatient(patient);
-        model.addAttribute("patientUpdate", "Patient info successfully update and saved");
-        return patient;
+        return patientProxy.updatePatient(patient);
+        //model.addAttribute("patientUpdate", "Patient info successfully update and saved");
+        //return patient;
     }
 
-    public void deletePatient(Model model, PatientBean patient) {
-        patientProxy.deletePatient(patient);
-        model.addAttribute("deletePatientSucceed", "Patient successfully deleted");
+    public void deletePatient(Long id) {
+        logger.info("delete patient with id: {}", id);
+        patientProxy.deletePatient(id);
+       // model.addAttribute("deletePatientSucceed", "Patient successfully deleted");
     }
 
     public List<NoteDto> getAllNotesByPatientId(Long patientId) {

@@ -37,7 +37,7 @@ public class PatientService {
     }
 
     public Patient addPatient(Model model, Patient newPatient) {
-        patientRepository.saveAndFlush(newPatient);
+        patientRepository.save(newPatient);
         model.addAttribute("addPatientSucceed", "New patient successfully saved");
         return newPatient;
     }
@@ -47,22 +47,11 @@ public class PatientService {
         return patientRepository.findAll();
     }
 
-    /*
     public Patient getPatientById(Long id) throws DataNotFoundException {
         logger.info("Get a patient with id: {}", id);
         return patientRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Patient not found"));
     }
-
-     */
-    public Patient getPatientById(Long id) throws DataNotFoundException {
-        logger.info("Get a patients with id: {}", id);
-        Patient patient = patientRepository.getPatientById(id);
-        if (patient == null) {
-            throw new DataNotFoundException("This id does not exists as patient");
-        }
-        return patient;
-    }
-
+/*
     public List<Patient> getPatientsByLastName(String lastName) {
         logger.info("get patient with lastname: {} ", lastName);
         return patientRepository.findByLastName(lastName);
@@ -73,6 +62,8 @@ public class PatientService {
         return patientRepository.findByFirstName(firstName);
 
     }
+
+ */
 
     public List<Patient> searchPatientsByName(String firstName, String lastName) {
         List<Patient> patientList = patientRepository.findAll();
@@ -87,34 +78,10 @@ public class PatientService {
         return patientList;
     }
 
-    public List<Patient> getByPatientName(Model model, String firstName, String lastName) {
-        logger.info("Get a patient by name: {} {}", firstName,lastName);
-        List<Patient> patientList = new ArrayList<>();
-        List<Patient> firstNameList = patientRepository.findByFirstName(firstName);
-        if (firstNameList.size()!=0) {
-            for (Patient pfn : firstNameList){
-                patientList.add(pfn);
-                model.addAttribute("patientFound", patientList);
-            }
-        }
-        List<Patient> lastNameList = patientRepository.findByLastName(lastName);
-        if (lastNameList.size() != 0) {
-            for (Patient pln : lastNameList){
-                patientList.add(pln);
-                model.addAttribute("patientFound", patientList);
-            }
-        }
-        else if (firstNameList.size() == 0 && lastNameList.size() == 0){
-            model.addAttribute("noPatientFound", "Patient does not exists in database. Try again.");
-        }
-        return patientList;
-    }
-
-    public Patient updatePatient(Model model, Patient patient) {
+    public Patient updatePatient(Patient patient) {
         logger.info("update patient: {} {}", patient.getFirstName(), patient.getLastName());
-        patientRepository.save(patient);
-        model.addAttribute("patientUpdate", "Patient info successfully update and saved");
-        return patient;
+        patient.setGender(patient.getGender());
+        return patientRepository.save(patient);
     }
 
     public Patient deletePatientById(Long id) throws DataNotFoundException {
@@ -124,12 +91,7 @@ public class PatientService {
         return patient;
     }
 
-    public void deletePatient(Model model, Patient patient) {
-        patientRepository.delete(patient);
-        model.addAttribute("deletePatientSucceed", "Patient successfully deleted");
-    }
-
-
+    /*
     public Page<Patient> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection) {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
                 Sort.by(sortField).descending();
@@ -137,5 +99,7 @@ public class PatientService {
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
         return this.patientRepository.findAll(pageable);
     }
+
+    */
 
 }

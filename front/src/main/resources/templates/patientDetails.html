@@ -21,9 +21,9 @@
                 <div th:if="${patientReport}" class="searchReportResult">
                     <h4>PATIENT RISK REPORT</h4>
                     <p>Patient name: <span th:text="${patientReport.patient.firstName}"></span>
-                                     <span th:text="${patientReport.patient.lastName}"></span>
+                        <span th:text="${patientReport.patient.lastName}"></span>
                         <br>
-                       Patient age : <span th:text="${patientReport.age}"></span> years old
+                        Patient age : <span th:text="${patientReport.age}"></span> years old
                         <br>The risk level of this patient is:</p>
                     <span th:if="${#strings.equals(patientReport.riskLevel ,'NONE')}"
                           class="d-block p-3 bg-success bg-gradient text-white"
@@ -52,7 +52,7 @@
 
                         <div class="col-7">
                         <textarea class="form-control" name="note"
-                                  th:text="${patientNote.note}">
+                                  th:text="${patientNote.note}" required>
                         </textarea> <br>
                         </div>
                         <div style="display: flex">
@@ -69,24 +69,27 @@
         </div>
         <br><br>
         <!-- Add patient note history -->
-        <form th:action="@{/patient/note/add}" th:method="post">
+        <form th:action="@{/patient/note/add}" th:method="post" th:object="${NoteDto}">
             <div style="margin: auto; text-align: center;">
                 <textarea class="form-control col-5"
                           style="text-align: center; margin: auto"
-                          name="note" th:value="*{note}"> </textarea>
+                          name="note" th:field="*{note}" required> </textarea>
+                <p th:if="${hasError}" th:text="${errMsg}" style="color: red"></p>
                 <p>Add a new note </p>
-            <button type="submit" class="btn btn-primary" name="patientId" th:value="${PatientId}">
-                Save note
-            </button>
+                <button type="submit" class="btn btn-primary" name="patientId" th:field="*{patientId}"
+                        th:value="${PatientId}">
+                    Save note
+                </button>
             </div>
         </form>
         <br>
 
-        <!-- Search result fields -->
+        <!-- Search result fields
         <div th:if="${patientFound}" class="searchPatientResult">
             <div th:each="patient : ${patientFound}">
             </div>
         </div>
+        -->
     </div>
 </div>
 <div class="row justify-content-md-center">

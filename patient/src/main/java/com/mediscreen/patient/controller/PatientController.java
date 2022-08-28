@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -42,23 +41,11 @@ public class PatientController {
     }
 
     @GetMapping("/searchPatient")
-    public  ResponseEntity<List<Patient>> patientSearch(Model model, String firstName, String lastName) {
+    public  ResponseEntity<List<Patient>> patientSearch (String firstName, String lastName) {
         logger.info("Send search patient named: {} {}", firstName, lastName);
         //return new ResponseEntity<>(patientService.getByPatientName(model,firstName,lastName), OK) ;
         List<Patient> patients = patientService.searchPatientsByName(firstName, lastName);
         return new ResponseEntity<>(patients, OK);
-    }
-
-    @GetMapping("/patient/lastName")
-    public ResponseEntity<List<Patient>> getPatientByLastName(@RequestParam String lastName) {
-        logger.info("get patient by lastname :{} request", lastName);
-        return new ResponseEntity<>(patientService.getPatientsByLastName(lastName), OK);
-    }
-
-    @GetMapping("/patient/firstName")
-    public ResponseEntity<List<Patient>> getPatientByFirstName(@RequestParam String firstName) {
-        logger.info("get patient by firstName :{} request", firstName);
-        return new ResponseEntity<>(patientService.getPatientByFirstName(firstName), OK);
     }
 
     @PostMapping("/patient/add")
@@ -68,21 +55,15 @@ public class PatientController {
     }
 
     @PutMapping("/patient/update")
-    public ResponseEntity<Patient> updatePatient(@RequestBody @Valid Model model, Patient patient) {
+    public ResponseEntity<Patient> updatePatient(@RequestBody @Valid Patient patient) {
         logger.info("update patient id :{}", patient.getId());
-        return new ResponseEntity<>(patientService.updatePatient(model, patient), OK);
-    }
-
-    @DeleteMapping("/patient/delete/id")
-    public ResponseEntity<Patient> deletePatientById(@RequestParam Long id) throws DataNotFoundException {
-        logger.info("remove patient with id:{}  request", id);
-        return new ResponseEntity<>(patientService.deletePatientById(id), OK);
+        return new ResponseEntity<>(patientService.savePatient(patient), OK);
     }
 
     @DeleteMapping("/patient/delete")
-    public void patientDelete(Model model, @RequestBody Patient patient) {
-        logger.info("Send patient to delete named: {} {}", patient.getFirstName(), patient.getLastName());
-        patientService.deletePatient(model, patient);
+    public ResponseEntity<Patient> deletePatientById(@RequestParam Long id) throws DataNotFoundException {
+        logger.info("remove patient with id:{}  request", id);
+        return new ResponseEntity<>(patientService.deletePatientById(id), OK);
     }
 
 }
