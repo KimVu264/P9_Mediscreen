@@ -51,12 +51,13 @@ public class PatientService {
         logger.info("Get a patient with id: {}", id);
         return patientRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Patient not found"));
     }
-/*
+
     public List<Patient> getPatientsByLastName(String lastName) {
         logger.info("get patient with lastname: {} ", lastName);
         return patientRepository.findByLastName(lastName);
     }
 
+/*
     public List<Patient> getPatientByFirstName(String firstName) {
         logger.info("fetching patient with firstname: {} ", firstName);
         return patientRepository.findByFirstName(firstName);
@@ -80,7 +81,6 @@ public class PatientService {
 
     public Patient updatePatient(Patient patient) {
         logger.info("update patient: {} {}", patient.getFirstName(), patient.getLastName());
-        patient.setGender(patient.getGender());
         return patientRepository.save(patient);
     }
 

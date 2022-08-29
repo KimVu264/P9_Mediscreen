@@ -35,11 +35,11 @@ public class NoteService {
                 .orElseThrow(()-> new DataNotFoundException("patient with id: "+id+ " not found"));
     }
 
-    public Note findById(String id) {
+    public Note findNoteById(String id) {
         logger.info("get note by id {}",id);
         return noteRepository.findById(id);
 
-    }
+}
 
     public List<Note> findAllByPatientId(Long id) {
         logger.info("get all notes by patient id {}",id);
@@ -53,26 +53,25 @@ public class NoteService {
         return noteRepository.insert(note);
     }
 
-    public Note addNewNote(@Valid String note, Long patientId) {
+    public Note addNewNote(String note, Long patientId) {
         logger.info("Add patient note send to repository with note: {}", note);
         Note newNote = new Note();
         newNote.setNote(note);
         newNote.setPatientId(patientId);
-        newNote.setCreatedDate(LocalDate.now());
         return noteRepository.insert(newNote);
     }
 
-    public Note updateNote(@Valid Note note) throws DataNotFoundException {
+    public Note updateNote(Note note) throws DataNotFoundException {
         logger.info("update the note");
         PatientDto patient   = patientById(note.getPatientId());
-        Note updateNote = findById(note.getId());
+        Note updateNote = findNoteById(note.getId());
         return noteRepository.save(note);
 
     }
 
     public Note deleteNote(String id) {
         logger.info("delete the note");
-        Note note = findById(id);
+        Note note = findNoteById(id);
         noteRepository.delete(note);
         return note;
     }

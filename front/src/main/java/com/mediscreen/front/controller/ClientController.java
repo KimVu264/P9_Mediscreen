@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -115,9 +116,9 @@ public class ClientController {
     }
 
     @PostMapping("/patient/update")
-    public String patientUpdate(@Valid PatientBean patient) {
+    public String patientUpdate(@Valid Model model, PatientBean patient) {
         logger.info("Send update to patient named: {} {}", patient.getFirstName(), patient.getLastName());
-        clientService.updatePatient(patient);
+        clientService.updatePatient(model, patient);
         return "redirect:/patients";
     }
 
@@ -156,6 +157,7 @@ public class ClientController {
         logger.info("Send update note: {} with id {}", note, id);
         NoteDto patientNote = clientService.getPatientNoteById(id);
         patientNote.setNote(note);
+        //patientNote.setCreatedDate(LocalDate.now());
         Long patientId = patientNote.getPatientId();
         clientService.updateNote(patientNote);
         return patientDetails(model, patientId);

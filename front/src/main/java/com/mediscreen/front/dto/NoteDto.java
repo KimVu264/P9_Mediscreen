@@ -2,7 +2,7 @@ package com.mediscreen.front.dto;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class NoteDto {
 
@@ -10,13 +10,15 @@ public class NoteDto {
     private Long patientId;
 
     @DateTimeFormat(pattern = "yyyy-mm-dd")
-    private Date createdDate;
+    //private Date createdDate;
+    private LocalDate createdDate = LocalDate.now();
+
     private String note;
 
     public NoteDto() {
     }
 
-    public NoteDto(String id, Long patientId, Date createdDate, String note) {
+    public NoteDto(String id, Long patientId, LocalDate createdDate, String note) {
         this.id = id;
         this.patientId = patientId;
         this.createdDate = createdDate;
@@ -39,11 +41,11 @@ public class NoteDto {
         this.patientId = patientId;
     }
 
-    public Date getCreatedDate() {
+    public LocalDate getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
+    public void setCreatedDate(LocalDate createdDate) {
         this.createdDate = createdDate;
     }
 

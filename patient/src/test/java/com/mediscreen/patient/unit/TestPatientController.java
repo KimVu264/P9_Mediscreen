@@ -110,6 +110,20 @@ public class TestPatientController {
     }
 
     @Test
+    void getPatientByLastNameTest() throws Exception {
+        //Arrange
+        when(patientService.getPatientsByLastName(any())).thenReturn(patientList);
+        //Act
+        mockMvc.perform(get("/patient/lastName")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .param("lastName", "Test"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(objectMapper.writeValueAsString(patientList)));
+
+    }
+
+    @Test
     void searchPatientByNameTest() throws Exception {
         when(patientService.searchPatientsByName(any(),any())).thenReturn(patientList);
         mockMvc.perform(get("/searchPatient")

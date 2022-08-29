@@ -54,11 +54,11 @@ public class ClientService {
         return patientProxy.searchPatient(firstName, lastName);
     }
 
-    public PatientBean updatePatient(PatientBean patient) {
+    public PatientBean updatePatient(Model model, PatientBean patient) {
         logger.info("update patient: {} {}", patient.getFirstName(),patient.getLastName());
-        return patientProxy.updatePatient(patient);
-        //model.addAttribute("patientUpdate", "Patient info successfully update and saved");
-        //return patient;
+        patientProxy.savePatient(patient);
+        model.addAttribute("patientUpdate", "Patient info successfully update and saved");
+        return patient;
     }
 
     public void deletePatient(Long id) {

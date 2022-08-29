@@ -41,7 +41,7 @@ public class AssessmentService {
         logger.info("assessment of the level of risk for patient {} {}", patient.getFirstName(), patient.getLastName());
         boolean isOlderThanThirty        = calculator.isOlderThanThirty(patient.getBirthdate());
         Gender gender = patient.getGender();
-        int terminologyTriggersCount = calculateTerminologyTriggers(Math.toIntExact(patient.getId()));
+        int terminologyTriggersCount = calculateTerminologyTriggers((long) Math.toIntExact(patient.getId()));
 
         if (terminologyTriggersCount >= 8) {
             return RiskLevel.EARLY_ONSET;
@@ -67,7 +67,7 @@ public class AssessmentService {
         }
     }
 
-    private int calculateTerminologyTriggers(int patientId) {
+    private int calculateTerminologyTriggers(Long patientId) {
         logger.info("calculate Terminology Triggers for patient id {}", patientId);
         List<String> notes = noteProxy.getAllNotesByPatientId(patientId)
                 .stream()

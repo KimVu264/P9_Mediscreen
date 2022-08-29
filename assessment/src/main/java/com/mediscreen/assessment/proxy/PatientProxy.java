@@ -13,7 +13,7 @@ public interface PatientProxy {
     @GetMapping("/patient/id")
     public PatientDto getPatientById(@RequestParam Long id);
 
-    @GetMapping("patient/lastname")
-    public List<PatientDto> getPatientByFamilyName(@RequestParam String lastname);
+    @GetMapping("patient/lastName")
+    public List<PatientDto> getPatientByFamilyName(@RequestParam String lastName);
 
 }

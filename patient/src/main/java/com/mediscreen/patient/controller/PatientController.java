@@ -17,6 +17,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
+@CrossOrigin
 public class PatientController {
 
     private static Logger logger = LogManager.getLogger(PatientController.class);
@@ -40,6 +41,12 @@ public class PatientController {
         return new ResponseEntity<>(patientService.getPatientById(id), OK);
     }
 
+    @GetMapping("/patient/lastName")
+    public ResponseEntity<List<Patient>> getPatientByLastName(@RequestParam String lastName) {
+        logger.info("get patient by lastname :{} request", lastName);
+        return new ResponseEntity<>(patientService.getPatientsByLastName(lastName), OK);
+    }
+
     @GetMapping("/searchPatient")
     public  ResponseEntity<List<Patient>> patientSearch (String firstName, String lastName) {
         logger.info("Send search patient named: {} {}", firstName, lastName);
@@ -57,7 +64,7 @@ public class PatientController {
     @PutMapping("/patient/update")
     public ResponseEntity<Patient> updatePatient(@RequestBody @Valid Patient patient) {
         logger.info("update patient id :{}", patient.getId());
-        return new ResponseEntity<>(patientService.savePatient(patient), OK);
+        return new ResponseEntity<>(patientService.updatePatient(patient), OK);
     }
 
     @DeleteMapping("/patient/delete")

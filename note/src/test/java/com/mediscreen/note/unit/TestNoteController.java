@@ -97,7 +97,7 @@ public class TestNoteController {
     @Test
     void getPatientNoteWithIdTest() throws Exception
     {
-        when(noteService.findById(any())).thenReturn(note);
+        when(noteService.findNoteById(any())).thenReturn(note);
         mvc.perform(get("/note/id")
                         .param("id", objectMapper.writeValueAsString(note.getId()))
                         .accept(MediaType.APPLICATION_JSON))

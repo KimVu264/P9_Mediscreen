@@ -5,24 +5,24 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+
 
 @Component
 public class Calculator {
 
     private static Logger logger = LogManager.getLogger(Calculator.class);
 
-    public static LocalDate convert(Date date) {
-        return date.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-    }
-
     public static int computeAge(Date birthDate) {
-        return Period.between(convert(birthDate), LocalDate.now()).getYears();
+        LocalDate birthDateLocalDate = new Date(birthDate.getTime()).toLocalDate();
+        return Period.between(birthDateLocalDate, LocalDate.now()).getYears();
     }
 
     public boolean isOlderThanThirty(Date birthdate) {

@@ -23,19 +23,18 @@ public class Note {
     private String note;
 
     @Field(value = "create_date")
-    //@DateTimeFormat(pattern = "yyyy-MM-dd")
-    @CreatedDate
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     //private Date createdDate;
-    private LocalDate date = LocalDate.now();
+    private LocalDate createdDate = LocalDate.now();
 
     public Note() {
     }
 
-    public Note(String id, Long patientId, String note, LocalDate date) {
+    public Note(String id, Long patientId, String note, LocalDate createdDate) {
         this.id = id;
         this.patientId = patientId;
         this.note = note;
-        this.date = date;
+        this.createdDate = createdDate;
     }
 
     public String getId() {
@@ -63,11 +62,11 @@ public class Note {
     }
 
     public LocalDate getCreatedDate() {
-        return date;
+        return createdDate;
     }
 
-    public void setCreatedDate(LocalDate date) {
-        this.date = date;
+    public void setCreatedDate(LocalDate createdDate) {
+        this.createdDate = createdDate;
     }
 }
 

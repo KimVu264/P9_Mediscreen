@@ -11,6 +11,6 @@ import java.util.List;
 public interface NoteProxy {
 
     @GetMapping("/notes")
-    public List<NoteDto> getAllNotesByPatientId(@RequestParam int patientId);
+    public List<NoteDto> getAllNotesByPatientId(@RequestParam Long patientId);
 
 }

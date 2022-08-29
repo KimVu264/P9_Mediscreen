@@ -29,7 +29,7 @@ public class NoteController {
 
     @GetMapping("/note/id")
     public ResponseEntity<Note> getPatientNoteWithId(@RequestParam String id){
-        Note patientNotesList = noteService.findById(id);
+        Note patientNotesList = noteService.findNoteById(id);
         logger.info("The patient note is found: {}", HttpStatus.OK);
         return ResponseEntity.status(HttpStatus.OK).body(patientNotesList);
     }
@@ -37,7 +37,7 @@ public class NoteController {
     @PutMapping("/note/update")
     public ResponseEntity<Note> updateNote(@RequestBody Note note) throws DataNotFoundException {
         logger.info("update note request");
-        return new ResponseEntity<>(noteService.updateNote(note), HttpStatus.OK);
+        return new ResponseEntity<>(noteService.saveNote(note), HttpStatus.OK);
     }
 
     @GetMapping("/notes")

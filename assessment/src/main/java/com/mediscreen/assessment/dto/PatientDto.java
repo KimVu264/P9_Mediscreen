@@ -2,7 +2,7 @@ package com.mediscreen.assessment.dto;
 
 import com.mediscreen.assessment.enums.Gender;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class PatientDto {
 
