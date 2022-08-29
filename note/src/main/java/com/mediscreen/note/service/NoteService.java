@@ -11,7 +11,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -57,7 +58,7 @@ public class NoteService {
         Note newNote = new Note();
         newNote.setNote(note);
         newNote.setPatientId(patientId);
-        newNote.setCreatedDate(new Date());
+        newNote.setCreatedDate(LocalDate.now());
         return noteRepository.insert(newNote);
     }
 

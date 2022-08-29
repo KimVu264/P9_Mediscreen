@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -22,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 public class NoteControllerTest {
 
-    Note note = new Note("376dkfdkf7678", 4L, "test note", Date.valueOf("2000-11_12") );
+    Note note = new Note("376dkfdkf7678", 4L, "test note", LocalDate.now() );
 
     @Autowired
     NoteRepository noteRepository;
@@ -46,12 +47,13 @@ public class NoteControllerTest {
     }
 
     @Test
-    void SaveNoteTest_shouldReturnNoteAdded() throws Exception {
-        noteRepository.delete(note);
+    void addNoteTest_shouldReturnNoteAdded() throws Exception {
         //Act
         mockMvc.perform(post("/note/add")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(note)))
+                        .accept(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(note))
+                        .param("note", "note test")
+                        .param("patientId", "4"))
                 .andDo(print())
                 .andExpect(status().isCreated());
 

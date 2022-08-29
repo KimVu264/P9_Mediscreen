@@ -1,7 +1,7 @@
 package com.mediscreen.note.controller;
 
 import com.mediscreen.note.dto.NoteDto;
-import com.mediscreen.note.model.Note;
+import com.mediscreen.note.exception.DataNotFoundException;
 import com.mediscreen.note.service.NoteService;
 import com.mediscreen.note.utils.NoteConversion;
 import org.apache.logging.log4j.LogManager;
@@ -12,8 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
 
 @RestController
 public class NoteCurlController {
@@ -30,10 +28,8 @@ public class NoteCurlController {
     }
 
     @PostMapping(value = "/patHistory/add", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<NoteDto> addNewNote(@Valid NoteDto noteDto) {
-        logger.info("Add Note for patientId: {}, and content: {}", noteDto.getPatId(), noteDto.getE());
-        Note patientNote = noteConversion.dtoToNote(noteDto);
-        noteService.addNewNote(patientNote.getNote(),patientNote.getPatientId());
-        return ResponseEntity.status(HttpStatus.CREATED).body(noteDto);
+    public ResponseEntity<NoteDto> saveNote(NoteDto newNote) throws DataNotFoundException {
+        logger.info("saving note request");
+        return new ResponseEntity<>(noteConversion.toNoteDto(noteService.saveNote(noteConversion.dtoToNote(newNote))), HttpStatus.CREATED);
     }
 }

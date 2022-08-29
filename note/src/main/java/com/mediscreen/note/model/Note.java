@@ -7,7 +7,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
 
 @Document(collection = "Note")
 public class Note {
@@ -22,18 +23,19 @@ public class Note {
     private String note;
 
     @Field(value = "create_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    //@DateTimeFormat(pattern = "yyyy-MM-dd")
     @CreatedDate
-    private Date createdDate = new Date();
+    //private Date createdDate;
+    private LocalDate date = LocalDate.now();
 
     public Note() {
     }
 
-    public Note(String id, Long patientId, String note, Date createdDate) {
+    public Note(String id, Long patientId, String note, LocalDate date) {
         this.id = id;
         this.patientId = patientId;
         this.note = note;
-        this.createdDate = createdDate;
+        this.date = date;
     }
 
     public String getId() {
@@ -60,12 +62,12 @@ public class Note {
         this.note = note;
     }
 
-    public Date getCreatedDate() {
-        return createdDate;
+    public LocalDate getCreatedDate() {
+        return date;
     }
 
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
+    public void setCreatedDate(LocalDate date) {
+        this.date = date;
     }
 }
 
