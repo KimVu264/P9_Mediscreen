@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(value = "note", url = "localhost:8082")
+@FeignClient(value = "note", url = "${mediscreen.noteUrl}")
 public interface NoteProxy {
 
     @GetMapping("/notes")

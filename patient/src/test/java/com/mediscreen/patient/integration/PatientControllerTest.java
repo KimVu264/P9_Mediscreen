@@ -59,7 +59,7 @@ public class PatientControllerTest {
                 .andDo(print())
                 .andExpect(status().isCreated());
     }
-
+/*
     @Test
     void testGetPatientById() throws Exception {
         mockMvc.perform(get("/patient/id")
@@ -70,6 +70,8 @@ public class PatientControllerTest {
                 .andExpect(status().isOk());
 
     }
+
+ */
 
 
 }

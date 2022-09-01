@@ -25,7 +25,7 @@ public class AssessmentControllerTest {
         mvc.perform(get("/assessment/report/id")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .param("patientId", "4"))
+                        .param("patientId", "1"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }

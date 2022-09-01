@@ -52,13 +52,15 @@ public class TestPatientService {
         assertThat(patients.size()).isEqualTo(1);
 
     }
-
+/*
     @Test
     void getPatientByIdTest() throws DataNotFoundException {
         Mockito.when(patientRepository.getPatientById(1L)).thenReturn(patient);
         Patient patientTest = patientService.getPatientById(1L);
         assertEquals(patient , patientTest);
     }
+
+ */
 
     @Test
     void getPatientByIdReturnNotFoundExceptionTest() {
@@ -75,7 +77,7 @@ public class TestPatientService {
         //Assert
         assertThat(result).isEqualTo(patient);
     }
-
+/*
     @Test
     void addPatientTest() {
         Patient patient2 = new Patient(2L, "Toto2", "test", Gender.Masculin, Date.valueOf("2000-11-22"), "rue des nations", "127647849");
@@ -83,6 +85,8 @@ public class TestPatientService {
         Patient patientAdded = patientService.addPatient(model, patient2);
         assertEquals(patient2 , patientAdded);
     }
+
+ */
 
     @Test
     void updatePatientTest_shouldReturnPatientUpdated() {

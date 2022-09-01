@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-
 @Component
 public class Calculator {
 

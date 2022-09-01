@@ -1,0 +1,94 @@
+version: '3.9'
+
+services:
+  mysqldb:
+    image: mysql:8
+    container_name: mysqldb
+    ports:
+      - "3309:3306"
+    environment:
+      MYSQL_DATABASE: patientdb
+      MYSQL_ROOT_PASSWORD: Root123.
+    volumes:
+      - sqldata:/var/lib/mysql
+    networks:
+      - mediscreen_network
+  patient:
+    build: ./patient/.
+    image: patient
+    container_name: patient
+    environment:
+      MYSQL_URL: mysqldb
+      MYSQL_DATABASE: patientdb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: Root123.
+    depends_on:
+      - mysqldb
+    ports:
+      - "8081:8081"
+    networks:
+      - mediscreen_network
+    restart: always
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+    networks:
+      - mediscreen_network
+  note:
+    build: ./note/.
+    image: notes
+    container_name: notes
+    environment:
+      PATIENT_URL: patient:8081
+      MONGODB_HOST: mongodb
+      MONGODB_PORT: 27017
+      MONGODB_DB: notes
+    depends_on:
+      - mongodb
+      - patient
+    ports:
+      - "8082:8082"
+    networks:
+      - mediscreen_network
+  assessment:
+    build: ./assessment/.
+    image: assessment
+    container_name: assessment
+    environment:
+      PATIENT_URL: patient:8081
+      NOTE_URL: note:8082
+    depends_on:
+      - note
+      - patient
+    ports:
+      - "8083:8083"
+    networks:
+      - mediscreen_network
+  front:
+    build: ./front/.
+    image: front
+    container_name: clientui
+    depends_on:
+      - note
+      - patient
+      - assessment
+    ports:
+      - "8080:8080"
+    networks:
+      - mediscreen_network
+    environment:
+      PATIENT_URL: patient:8081
+      NOTE_URL: note:8082
+      ASSESSMENT_URL: assessment:8083
+
+networks:
+  mediscreen_network:
+    driver: bridge
+
+volumes:
+  sqldata:
+  mongodata:
