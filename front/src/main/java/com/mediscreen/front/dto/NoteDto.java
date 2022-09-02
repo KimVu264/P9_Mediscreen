@@ -2,6 +2,7 @@ package com.mediscreen.front.dto;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
 public class NoteDto {
@@ -13,6 +14,7 @@ public class NoteDto {
     //private Date createdDate;
     private LocalDate createdDate = LocalDate.now();
 
+    @NotEmpty(message = "Note cannot be empty")
     private String note;
 
     public NoteDto() {

@@ -60,7 +60,7 @@ public class ClientController {
     }
 
     @PostMapping("/savePatient")
-    public String savePatient(@Valid PatientBean patient, BindingResult result) {
+    public String savePatient(Model model, @Valid @ModelAttribute("patient") PatientBean patient, BindingResult result) {
         //model.addAttribute("patient", new PatientBean());
         //clientService.savePatient(patient);
         //return "redirect:/patients";
@@ -70,7 +70,8 @@ public class ClientController {
         }
         logger.info("save patient with name: {} {}",patient.getFirstName(), patient.getLastName() );
         clientService.savePatient(patient);
-        return "redirect:/patients";
+        model.addAttribute("isInsertSuccess", true);
+        return allPatients(model);
     }
 
     @GetMapping("/patient/id")
@@ -81,7 +82,14 @@ public class ClientController {
         getPatientNotes(model, id);
         ReportDto reportDto = clientService.getReportByPatientId(id);
         model.addAttribute("patientReport", reportDto);
-        model.addAttribute("NoteDto", new NoteDto());
+        if (model.containsAttribute("isAddNoteSuccess") && !(boolean)(model.getAttribute("isAddNoteSuccess"))) {
+            model.addAttribute("noteDto", new NoteDto());
+        } else if (model.containsAttribute("isUpdateNoteSuccess") && !(boolean)(model.getAttribute("isUpdateNoteSuccess"))) {
+            model.addAttribute("noteAddDto", new NoteDto());
+        } else {
+            model.addAttribute("noteDto", new NoteDto());
+            model.addAttribute("noteAddDto", new NoteDto());
+        }
         return "patientDetails";
     }
 
@@ -116,10 +124,15 @@ public class ClientController {
     }
 
     @PostMapping("/patient/update")
-    public String patientUpdate(@Valid Model model, PatientBean patient) {
+    public String patientUpdate(Model model, @Valid @ModelAttribute("patient") PatientBean patient, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            logger.info("Validate failed for update patient!");
+            return "updatePatient";
+        }
         logger.info("Send update to patient named: {} {}", patient.getFirstName(), patient.getLastName());
         clientService.updatePatient(model, patient);
-        return "redirect:/patients";
+        model.addAttribute("isUpdateSuccess", true);
+        return allPatients(model);
     }
 
     @RequestMapping("/patient/delete")
@@ -140,26 +153,32 @@ public class ClientController {
     }
 
     @RequestMapping(value="/patient/note/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String addPatientNote(Model model, @Valid NoteDto note, BindingResult result) {
+    public String addPatientNote(Model model, @Valid @ModelAttribute("noteAddDto") NoteDto noteAddDto, BindingResult result) {
         if (result.hasErrors()) {
             logger.info("Validate failed for adding note!");
-            model.addAttribute("hasError", true);
-            model.addAttribute("errMsg", "Note cannot be empty");
-            return patientDetails(model, note.getPatientId());
+            model.addAttribute("isAddNoteSuccess", false);
+            return patientDetails(model, noteAddDto.getPatientId());
         }
-        logger.info("Send new note: {} with patient id {}", note.getNote(), note.getPatientId());
-        clientService.addNewNote(note.getNote(), note.getPatientId());
-        return patientDetails(model, note.getPatientId());
+        logger.info("Send new note: {} with patient id {}", noteAddDto.getNote(), noteAddDto.getPatientId());
+        clientService.addNewNote(noteAddDto.getNote(), noteAddDto.getPatientId());
+        model.addAttribute("isAddNoteSuccess", true);
+        return patientDetails(model, noteAddDto.getPatientId());
     }
 
     @PostMapping("/patient/note/update")
-    public String updatePatientNote(@Valid Model model, String note, String id) {
-        logger.info("Send update note: {} with id {}", note, id);
-        NoteDto patientNote = clientService.getPatientNoteById(id);
-        patientNote.setNote(note);
+    public String updatePatientNote(Model model, @Valid @ModelAttribute("noteDto") NoteDto noteDto, BindingResult result) {
+        if (result.hasErrors()) {
+            logger.info("Validate failed for updating note!");
+            model.addAttribute("isUpdateNoteSuccess", false);
+            return patientDetails(model, noteDto.getPatientId());
+        }
+        logger.info("Send update note: {} with id {}", noteDto.getNote(), noteDto.getId());
+        NoteDto patientNote = clientService.getPatientNoteById(noteDto.getId());
+        patientNote.setNote(noteDto.getNote());
         //patientNote.setCreatedDate(LocalDate.now());
         Long patientId = patientNote.getPatientId();
         clientService.updateNote(patientNote);
+        model.addAttribute("isUpdateNoteSuccess", true);
         return patientDetails(model, patientId);
     }
 

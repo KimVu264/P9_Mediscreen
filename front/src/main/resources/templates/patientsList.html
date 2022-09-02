@@ -74,7 +74,7 @@
             <td th:text="${patient.firstName}"></td>
             <td th:text="${patient.lastName}"></td>
             <td th:text="${patient.gender}"></td>
-            <td th:text="${#dates.format(patient.birthdate,'dd/MM/yyyy')}"></td>
+            <td th:text="${patient.birthdate}"></td>
             <td th:text="${patient.address}"></td>
             <td th:text="${patient.tel}"></td>
 
@@ -94,5 +94,21 @@
     </div>
 
 </div>
+
+<!--<script th:src="@{/static/js/sweetalert2.all.min.js}" type="text/javascript"></script>-->
+<th:block th:if="${isInsertSuccess}">
+    <script>
+        window.onload = function () {
+            window.confirm("Add patient successfully");
+        }
+    </script>
+</th:block>
+<th:block th:if="${isUpdateSuccess}">
+    <script>
+        window.onload = function () {
+            window.confirm("Update patient successfully");
+        }
+    </script>
+</th:block>
 </body>
 </html>

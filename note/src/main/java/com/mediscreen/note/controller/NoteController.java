@@ -37,7 +37,7 @@ public class NoteController {
     @PutMapping("/note/update")
     public ResponseEntity<Note> updateNote(@RequestBody Note note) throws DataNotFoundException {
         logger.info("update note request");
-        return new ResponseEntity<>(noteService.saveNote(note), HttpStatus.OK);
+        return new ResponseEntity<>(noteService.updateNote(note), HttpStatus.OK);
     }
 
     @GetMapping("/notes")

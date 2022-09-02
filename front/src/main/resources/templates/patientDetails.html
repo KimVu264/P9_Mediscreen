@@ -43,8 +43,9 @@
                 <!-- Search patient notes history -->
                 <div th:each="patientNote: ${PatientNoteList}">
 
-                    <form class="form-inline" th:action="@{/patient/note/update(id=${patientNote.id})}" method="post"
-                          th:object="${NoteDto}">
+                    <form class="form-inline" th:action="@{/patient/note/update}" method="post"
+                          th:object="${noteDto}">
+                        <input type="hidden" name="id" th:value="${patientNote.id}">
 
                         <div class="col-7"
                              th:text="${#temporals.format(patientNote.createdDate, 'dd/MM/yyyy hh:mm a')}">
@@ -52,12 +53,17 @@
                         </div>
 
                         <div class="col-7">
-                        <textarea class="form-control" name="note"
-                                  th:text="${patientNote.note}" required>
-                        </textarea> <br>
+                            <textarea class="form-control" name="note"
+                                      th:text="${patientNote.id == noteDto.id ? noteDto.note : patientNote.note}">
+                            </textarea>
+                            <ul th:if="${patientNote.id == noteDto.id}">
+                                <li th:each="err : ${#fields.errors('note')}" th:text="${err}" style="color: red" />
+                            </ul>
+                            <br>
                         </div>
                         <div style="display: flex">
-                            <button type="submit" class="btn btn-primary"> Update</button>
+                            <button type="submit" class="btn btn-primary" name="patientId"
+                                    th:value="${PatientId}"> Update</button>
                             &emsp;
                             <a th:href="@{/patient/note/delete(id=${patientNote.id})}"
                                class="btn btn-danger"> Delete </a>
@@ -70,12 +76,14 @@
         </div>
         <br><br>
         <!-- Add patient note history -->
-        <form th:action="@{/patient/note/add}" th:method="post" th:object="${NoteDto}">
+        <form th:action="@{/patient/note/add}" th:method="post" th:object="${noteAddDto}">
             <div style="margin: auto; text-align: center;">
                 <textarea class="form-control col-5"
                           style="text-align: center; margin: auto"
-                          name="note" th:field="*{note}" required> </textarea>
-                <p th:if="${hasError}" th:text="${errMsg}" style="color: red"></p>
+                          th:field="*{note}"> </textarea>
+                <ul>
+                    <li th:each="err : ${#fields.errors('note')}" th:text="${err}" style="color: red" />
+                </ul>
                 <p>Add a new note </p>
                 <button type="submit" class="btn btn-primary" name="patientId" th:field="*{patientId}"
                         th:value="${PatientId}">
@@ -99,5 +107,19 @@
 <br><br>
 </div>
 </div>
+<th:block th:if="${isAddNoteSuccess}">
+    <script>
+        window.onload = function () {
+            window.confirm("Add note successfully");
+        }
+    </script>
+</th:block>
+<th:block th:if="${isUpdateNoteSuccess}">
+    <script>
+        window.onload = function () {
+            window.confirm("Update note successfully");
+        }
+    </script>
+</th:block>
 </body>
 </html>

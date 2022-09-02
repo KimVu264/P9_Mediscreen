@@ -16,7 +16,7 @@
     <hr>
     <h2>Update A Patient</h2>
 
-    <form th:action="@{/savePatient}" th:object="${patient}" method="POST">
+    <form th:action="@{/patient/update}" th:object="${patient}" method="POST">
 
         <div class="input-group input-group-sm mb-3">
             <span class="input-group-text col-4 justify-content-center"> Id </span>
@@ -25,25 +25,37 @@
 
         <div class="input-group input-group-sm mb-3">
             <span class="input-group-text col-4 justify-content-center"> First Name </span>
-            <input type="text" class="form-control" name="firstName" th:value="${patient.firstName}">
+            <input type="text" class="form-control" name="firstName" th:value="${patient.firstName}" required>
+            <ul>
+                <li th:each="err : ${#fields.errors('firstName')}" th:text="${err}" style="color: red" />
+            </ul>
         </div>
 
         <div class="input-group input-group-sm mb-3">
             <span class="input-group-text col-4 justify-content-center"> Last Name </span>
-            <input type="text" class="form-control" name="lastName" th:value="${patient.lastName}" >
+            <input type="text" class="form-control" name="lastName" th:value="${patient.lastName}" required>
+            <ul th:if="${#fields.hasErrors('lastName')}">
+                <li th:each="err : ${#fields.errors('lastName')}" th:text="${err}" style="color: red" />
+            </ul>
         </div>
 
         <div class="input-group input-group-sm mb-3">
             <span class="input-group-text col-4 justify-content-center"> Birthdate </span>
-            <input type="date" class="form-control" name="birthdate" th:value="${patient.birthdate}">
+            <input type="date" class="form-control" name="birthdate" th:value="${patient.birthdate}" required>
+            <ul th:if="${#fields.hasErrors('birthdate')}" >
+                <li th:each="err : ${#fields.errors('birthdate')}" th:text="${err}" style="color: red" />
+            </ul>
         </div>
 
         <div class="input-group input-group-sm mb-3">
             <span class="input-group-text col-4 justify-content-center"> Select Gender </span>
-            <select name="gender" >
+            <select name="gender" required>
                 <option class="form-control" th:each="gender: ${T(com.mediscreen.front.enums.Gender).values()}"
-                        th:value="${patient.gender}" th:text="${gender}" ></option>
+                        th:value="${gender}" th:text="${gender}" th:selected="${gender == patient.gender}" ></option>
             </select>
+            <ul>
+                <li th:each="err : ${#fields.errors('gender')}" th:text="${err}" style="color: red" />
+            </ul>
 
         </div>
         <div class="input-group input-group-sm mb-3">

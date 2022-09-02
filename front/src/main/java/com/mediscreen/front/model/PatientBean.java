@@ -3,19 +3,26 @@ package com.mediscreen.front.model;
 import com.mediscreen.front.enums.Gender;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.sql.Date;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class PatientBean {
 
     private Long id;
 
+    @NotEmpty(message = "First name is not empty")
     private String firstName;
 
+    @NotEmpty(message = "Last name is not empty")
     private String lastName;
 
+    @NotNull(message = "Please choose gender")
     private Gender gender;
 
-    private Date birthdate;
+    @NotEmpty(message = "Please choose birthday")
+    private String birthdate;
 
     private String address;
 
@@ -24,7 +31,7 @@ public class PatientBean {
     public PatientBean() {
     }
 
-    public PatientBean(Long id, String firstName, String lastName, Gender gender, Date birthdate, String address, String tel) {
+    public PatientBean(Long id, String firstName, String lastName, Gender gender, String birthdate, String address, String tel) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -66,11 +73,11 @@ public class PatientBean {
         this.gender = gender;
     }
 
-    public Date getBirthdate() {
+    public String getBirthdate() {
         return birthdate;
     }
 
-    public void setBirthdate(Date birthdate) {
+    public void setBirthdate(String birthdate) {
         this.birthdate = birthdate;
     }
 
