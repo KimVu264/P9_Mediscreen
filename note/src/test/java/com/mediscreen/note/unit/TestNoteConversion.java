@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,7 +19,7 @@ public class TestNoteConversion {
     NoteConversion noteMapper;
 
     NoteDto noteDto = new NoteDto("1", "a few notes for a test");
-    Note note    = new Note("62d12c25191bcc3f11d08547", 1L, "a few notes for a test", LocalDate.now());
+    Note note    = new Note("62d12c25191bcc3f11d08547", 1L, "a few notes for a test", LocalDateTime.now());
 
     @Test
     public void toNoteTest(){

@@ -15,6 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +29,7 @@ import static org.mockito.Mockito.*;
 public class TestNoteService {
 
     private PatientDto patient = new PatientDto(1L, "john", "doe", Date.valueOf("1990-11-20"), "Masculin", "0890009", "rue des nations");
-    Note note = new Note("62d12c25191bcc3f11d08547", 1L,"a few notes for a test", LocalDate.now());
+    Note note = new Note("62d12c25191bcc3f11d08547", 1L,"a few notes for a test", LocalDateTime.now());
     static List<Note> patientNotesList = new ArrayList<>();
     @Mock
     private NoteRepository noteRepository;

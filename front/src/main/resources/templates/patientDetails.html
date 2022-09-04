@@ -48,7 +48,7 @@
                         <input type="hidden" name="id" th:value="${patientNote.id}">
 
                         <div class="col-7"
-                             th:text="${#temporals.format(patientNote.createdDate, 'dd/MM/yyyy hh:mm a')}">
+                             th:text="${#temporals.format(patientNote.createdDate, 'dd/MM/yyyy HH:mm:ss')}">
                              <!--th:text="${#dates.format(patientNote.createdDate, 'dd/MM/yyyy hh:mm a')}"> -->
                         </div>
 

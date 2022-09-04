@@ -16,6 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -27,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class TestNoteCurlController {
 
     NoteDto noteDto = new NoteDto("1", "a few notes for a test");
-    Note note   = new Note("62d12c25191bcc3f11d08547", 1L, "a few notes for a test",LocalDate.now() );
+    Note note   = new Note("62d12c25191bcc3f11d08547", 1L, "a few notes for a test", LocalDateTime.now() );
     @Autowired
     private MockMvc mvc;
     @MockBean

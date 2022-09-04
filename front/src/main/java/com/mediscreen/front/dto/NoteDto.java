@@ -4,15 +4,16 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class NoteDto {
 
     private String id;
     private Long patientId;
 
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
+//    @DateTimeFormat(pattern = "yyyy-mm-dd")
     //private Date createdDate;
-    private LocalDate createdDate = LocalDate.now();
+    private LocalDateTime createdDate = LocalDateTime.now();
 
     @NotEmpty(message = "Note cannot be empty")
     private String note;
@@ -20,7 +21,7 @@ public class NoteDto {
     public NoteDto() {
     }
 
-    public NoteDto(String id, Long patientId, LocalDate createdDate, String note) {
+    public NoteDto(String id, Long patientId, LocalDateTime createdDate, String note) {
         this.id = id;
         this.patientId = patientId;
         this.createdDate = createdDate;
@@ -43,11 +44,11 @@ public class NoteDto {
         this.patientId = patientId;
     }
 
-    public LocalDate getCreatedDate() {
+    public LocalDateTime getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDate createdDate) {
+    public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
     }
 

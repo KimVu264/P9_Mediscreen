@@ -15,6 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -28,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(NoteController.class)
 public class TestNoteController {
 
-    Note note = new Note("62d12c25191bcc3f11d08547", 1L, "note test", LocalDate.now());
+    Note note = new Note("62d12c25191bcc3f11d08547", 1L, "note test", LocalDateTime.now());
 
     @Autowired
     private MockMvc mvc;

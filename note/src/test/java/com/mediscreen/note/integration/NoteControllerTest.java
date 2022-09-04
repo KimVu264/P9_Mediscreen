@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -23,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 public class NoteControllerTest {
 
-    Note note = new Note("376dkfdkf7678", 4L, "test note", LocalDate.now() );
+    Note note = new Note("376dkfdkf7678", 4L, "test note", LocalDateTime.now() );
 
     @Autowired
     NoteRepository noteRepository;

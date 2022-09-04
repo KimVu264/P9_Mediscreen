@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.NotBlank;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Document(collection = "Note")
 public class Note {
@@ -23,14 +24,14 @@ public class Note {
     private String note;
 
     @Field(value = "create_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+//    @DateTimeFormat(pattern = "yyyy-MM-dd")
     //private Date createdDate;
-    private LocalDate createdDate = LocalDate.now();
+    private LocalDateTime createdDate = LocalDateTime.now();
 
     public Note() {
     }
 
-    public Note(String id, Long patientId, String note, LocalDate createdDate) {
+    public Note(String id, Long patientId, String note, LocalDateTime createdDate) {
         this.id = id;
         this.patientId = patientId;
         this.note = note;
@@ -61,11 +62,11 @@ public class Note {
         this.note = note;
     }
 
-    public LocalDate getCreatedDate() {
+    public LocalDateTime getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDate createdDate) {
+    public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
     }
 }
