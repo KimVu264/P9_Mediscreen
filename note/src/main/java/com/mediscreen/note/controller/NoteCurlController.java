@@ -11,7 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @RestController
 public class NoteCurlController {
@@ -28,7 +31,7 @@ public class NoteCurlController {
     }
 
     @PostMapping(value = "/patHistory/add", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<NoteDto> saveNote(NoteDto newNote) throws DataNotFoundException {
+    public ResponseEntity<NoteDto> saveNote(@Valid NoteDto newNote) throws DataNotFoundException {
         logger.info("saving note request");
         return new ResponseEntity<>(noteConversion.toNoteDto(noteService.saveNote(noteConversion.dtoToNote(newNote))), HttpStatus.CREATED);
     }

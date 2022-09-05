@@ -10,5 +10,4 @@ WORKDIR /app
 #Copy the jar from host machine to image filesystem
 COPY target/note-0.0.1-SNAPSHOT.jar note.jar
 
-
 ENTRYPOINT ["java","-jar","note.jar"]

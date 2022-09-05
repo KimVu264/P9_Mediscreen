@@ -10,5 +10,4 @@ WORKDIR /app
 #Copy the jar from host machine to image filesystem
 COPY target/assessment-0.0.1-SNAPSHOT.jar assessment.jar
 
-
 ENTRYPOINT ["java","-jar","assessment.jar"]

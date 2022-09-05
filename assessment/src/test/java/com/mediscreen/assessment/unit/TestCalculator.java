@@ -34,7 +34,7 @@ public class TestCalculator {
 
     @ParameterizedTest
     @ValueSource(ints = {20, 29})
-    public void isOlderThenThirtyTest_shouldReturnFalse_forYoungPatient(int years) {
+    public void isOlderThanThirtyTest_shouldReturnFalse_forYoungPatient(int years) {
         //Arrange
         PatientDto patient = new PatientDto(1L, "john", "doe", Date.valueOf("2005-11-20"), Gender.Masculin, "0890009", "rue des nations");
         //Act
@@ -47,7 +47,7 @@ public class TestCalculator {
 
     @ParameterizedTest
     @ValueSource(ints = {42, 30})
-    void isOlderThenThirtyTest_shouldReturnTrue(int years) {
+    void isOlderThanThirtyTest_shouldReturnTrue(int years) {
         //Arrange
         PatientDto patient = new PatientDto(1L, "john", "doe", Date.valueOf("1980-11-20"), Gender.Masculin, "0890009", "rue des nations");
         //Act
