@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.ui.Model;
 
@@ -29,6 +30,7 @@ public class TestPatientService {
 
     static List<Patient> patientsList = new ArrayList<>();
     static Patient patient;
+    @Mock
     static Model model;
     @Mock
     private PatientRepository patientRepository;
@@ -52,15 +54,24 @@ public class TestPatientService {
         assertThat(patients.size()).isEqualTo(1);
 
     }
-/*
+
     @Test
-    void getPatientByIdTest() throws DataNotFoundException {
-        Mockito.when(patientRepository.getPatientById(1L)).thenReturn(patient);
-        Patient patientTest = patientService.getPatientById(1L);
-        assertEquals(patient , patientTest);
+    void getPatientByIdTest_shouldReturnSaved() throws DataNotFoundException {
+        //Arrange
+        when(patientRepository.findById(any())).thenReturn(Optional.of(patient));
+        //Act
+        Patient result = patientService.getPatientById(1L);
+        //Assert
+        assertThat(result).isEqualTo(patient);
     }
 
- */
+    @Test
+    void getPatientByIdTest_shouldThrowDataNotFoundException() throws DataNotFoundException {
+        //Arrange
+        when(patientRepository.findById(any())).thenReturn(Optional.empty());
+        //Act //Assert
+        assertThrows(DataNotFoundException.class, () -> patientService.getPatientById(1L));
+    }
 
     @Test
     void getPatientByIdReturnNotFoundExceptionTest() {
@@ -77,16 +88,14 @@ public class TestPatientService {
         //Assert
         assertThat(result).isEqualTo(patient);
     }
-/*
+
     @Test
     void addPatientTest() {
-        Patient patient2 = new Patient(2L, "Toto2", "test", Gender.Masculin, Date.valueOf("2000-11-22"), "rue des nations", "127647849");
-        Mockito.when(patientRepository.saveAndFlush(patient)).thenReturn(patient2);
-        Patient patientAdded = patientService.addPatient(model, patient2);
-        assertEquals(patient2 , patientAdded);
+        Mockito.when(patientRepository.save(patient)).thenReturn(patient);
+        Patient patientAdded = patientService.addPatient(model, patient);
+        assertEquals(patient , patientAdded);
     }
 
- */
 
     @Test
     void updatePatientTest_shouldReturnPatientUpdated() {
@@ -118,6 +127,17 @@ public class TestPatientService {
         when(patientRepository.findById(any())).thenReturn(Optional.empty());
         //Act //Assert
         assertThrows(DataNotFoundException.class, () -> patientService.deletePatientById(1L));
+    }
+
+    @Test
+    void findByLastName_shouldReturn() {
+        //Arrange
+        when(patientRepository.findByLastName(any())).thenReturn(List.of(patient));
+        //Act
+        List<Patient> result = patientService.getPatientsByLastName("test");
+        //Assert
+        assertThat(result.size()).isEqualTo(1);
+        assertThat(result.get(0)).isEqualTo(patient);
     }
 
     @Test

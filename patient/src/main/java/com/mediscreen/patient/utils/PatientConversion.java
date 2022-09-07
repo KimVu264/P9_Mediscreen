@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Generated;
 import java.sql.Date;
 
-
 @Component
 public class PatientConversion {
 
