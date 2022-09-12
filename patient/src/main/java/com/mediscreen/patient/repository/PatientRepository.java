@@ -10,8 +10,8 @@ import java.util.List;
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 
     Patient getPatientById(Long id);
-    List<Patient> findByLastName(String lastName);
-    List<Patient> findByFirstName(String firstName);
+    List<Patient> findByLastNameContaining(String lastName);
+    List<Patient> findByFirstNameContaining(String firstName);
 
-    List<Patient> findPatientByFirstNameAndLastName(String firstName, String lastName);
+    List<Patient> findPatientByFirstNameContainingAndLastNameContaining(String firstName, String lastName);
 }

@@ -11,7 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.ui.Model;
 
@@ -132,7 +131,7 @@ public class TestPatientService {
     @Test
     void findByLastName_shouldReturn() {
         //Arrange
-        when(patientRepository.findByLastName(any())).thenReturn(List.of(patient));
+        when(patientRepository.findByLastNameContaining(any())).thenReturn(List.of(patient));
         //Act
         List<Patient> result = patientService.getPatientsByLastName("test");
         //Assert
@@ -142,8 +141,8 @@ public class TestPatientService {
 
     @Test
     void searchPatientsByName_shouldReturnPatientsByFirstName() {
-        Mockito.when(patientRepository.findByFirstName(patient.getFirstName())).thenReturn(patientsList);
-        Mockito.when(patientRepository.findByLastName(patient.getLastName())).thenReturn(null);
+        Mockito.when(patientRepository.findByFirstNameContaining(patient.getFirstName())).thenReturn(patientsList);
+        Mockito.when(patientRepository.findByLastNameContaining(patient.getLastName())).thenReturn(null);
 
         List<Patient> patientListTest = patientService.searchPatientsByName("Toto", "");
 
@@ -152,8 +151,8 @@ public class TestPatientService {
 
     @Test
     void searchPatientsByName_shouldReturnPatientsByLastName() {
-        Mockito.when(patientRepository.findByFirstName(patient.getFirstName())).thenReturn(null);
-        Mockito.when(patientRepository.findByLastName(patient.getLastName())).thenReturn(patientsList);
+        Mockito.when(patientRepository.findByFirstNameContaining(patient.getFirstName())).thenReturn(null);
+        Mockito.when(patientRepository.findByLastNameContaining(patient.getLastName())).thenReturn(patientsList);
 
         List<Patient> patientListTest = patientService.searchPatientsByName("", "test");
 
@@ -163,7 +162,7 @@ public class TestPatientService {
 
     @Test
     void searchPatientsByName_shouldReturnPatientsByFirstNameAndLastName() {
-        Mockito.when(patientRepository.findPatientByFirstNameAndLastName(patient.getFirstName(),patient.getLastName())).thenReturn(patientsList);
+        Mockito.when(patientRepository.findPatientByFirstNameContainingAndLastNameContaining(patient.getFirstName(),patient.getLastName())).thenReturn(patientsList);
 
         List<Patient> patientListTest = patientService.searchPatientsByName("Toto", "test");
 
@@ -173,8 +172,8 @@ public class TestPatientService {
     @Test
     void findPatientByNameWrongNameReturnNotFoundTest()
     {
-        Mockito.when(patientRepository.findByFirstName(patient.getFirstName())).thenReturn(null);
-        Mockito.when(patientRepository.findByLastName(patient.getLastName())).thenReturn(null);
+        Mockito.when(patientRepository.findByFirstNameContaining(patient.getFirstName())).thenReturn(null);
+        Mockito.when(patientRepository.findByLastNameContaining(patient.getLastName())).thenReturn(null);
 
         List<Patient> patientListTest = patientService.searchPatientsByName("", "");
 

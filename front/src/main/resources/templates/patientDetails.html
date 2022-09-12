@@ -24,6 +24,8 @@
                         <span th:text="${patientReport.patient.lastName}"></span>
                         <br>
                         Patient age : <span th:text="${patientReport.age}"></span> years old
+                        <br>
+                        Patient sex: <span th:text="${patientReport.patient.gender}"></span>
                         <br>The risk level of this patient is:</p>
                     <span th:if="${#strings.equals(patientReport.riskLevel ,'NONE')}"
                           class="d-block p-3 bg-success bg-gradient text-white"

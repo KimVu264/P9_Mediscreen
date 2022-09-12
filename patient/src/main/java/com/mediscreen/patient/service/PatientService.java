@@ -6,15 +6,9 @@ import com.mediscreen.patient.repository.PatientRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -54,7 +48,7 @@ public class PatientService {
 
     public List<Patient> getPatientsByLastName(String lastName) {
         logger.info("get patient with lastname: {} ", lastName);
-        return patientRepository.findByLastName(lastName);
+        return patientRepository.findByLastNameContaining(lastName);
     }
 
 /*
@@ -70,11 +64,11 @@ public class PatientService {
         List<Patient> patientList = patientRepository.findAll();
 
         if (!firstName.isEmpty() && !lastName.isEmpty()) {
-            patientList = patientRepository.findPatientByFirstNameAndLastName(firstName, lastName);
+            patientList = patientRepository.findPatientByFirstNameContainingAndLastNameContaining(firstName, lastName);
         } else if (!firstName.isEmpty()) {
-            patientList = patientRepository.findByFirstName(firstName);
+            patientList = patientRepository.findByFirstNameContaining(firstName);
         } else if (!lastName.isEmpty()) {
-            patientList = patientRepository.findByLastName(lastName);
+            patientList = patientRepository.findByLastNameContaining(lastName);
         }
         return patientList;
     }
